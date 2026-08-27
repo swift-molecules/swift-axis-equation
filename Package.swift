@@ -18,7 +18,7 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-molecules/swift-axis.git",
+            url: "https://github.com/swift-atoms/swift-axis.git",
             branch: "main"
         ),
         .package(
