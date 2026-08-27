@@ -1,0 +1,61 @@
+// swift-tools-version: 6.4
+import PackageDescription
+
+let package = Package(
+    name: "swift-axis-equation",
+    platforms: [
+        .macOS(.v27),
+        .iOS(.v27),
+        .tvOS(.v27),
+        .watchOS(.v27),
+        .visionOS(.v27),
+    ],
+    products: [
+        .library(
+            name: "Axis Equation",
+            targets: ["Axis Equation"]
+        ),
+    ],
+    dependencies: [
+        .package(
+            url: "https://github.com/swift-molecules/swift-axis.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-atoms/swift-equation.git",
+            branch: "main"
+        ),
+    ],
+    targets: [
+        .target(
+            name: "Axis Equation",
+            dependencies: [
+                .product(name: "Axis", package: "swift-axis"),
+                .product(name: "Equation", package: "swift-equation"),
+            ]
+        ),
+        .testTarget(
+            name: "Axis Equation Tests",
+            dependencies: [
+                "Axis Equation",
+            ]
+        ),
+    ],
+    swiftLanguageModes: [.v6]
+)
+
+for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
+    let ecosystem: [SwiftSetting] = [
+        .strictMemorySafety(),
+        .enableUpcomingFeature("ExistentialAny"),
+        .enableUpcomingFeature("InternalImportsByDefault"),
+        .enableUpcomingFeature("MemberImportVisibility"),
+        .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+        .enableExperimentalFeature("Lifetimes"),
+        .enableUpcomingFeature("InferIsolatedConformances"),
+    ]
+
+    let package: [SwiftSetting] = []
+
+    target.swiftSettings = (target.swiftSettings ?? []) + ecosystem + package
+}
